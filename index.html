@@ -18,16 +18,47 @@
             <input type="text">
             <button type="submit">추가</button>
             <ul>
-                <li>
-                    <input type="checkbox" name="" id="">
-                    <button class="btn-delete">X</button>
-                </li>
             </ul>
             <button type="submit">메모 삭제</button>
         </section>
     </main>
     <script>
+        memo = []; //memo 배열을 만들고
+        memo.push("test1");
+        memo.push("test2");
+
+        localStorage.setItem("메모", memo);
+        const ul = document.querySelector("ul");
         
+        // 리스트 추가
+        ul.innerHTML=
+        `
+            <li>
+                <input type="checkbox" name="" id="">
+                ${localStorage.getItem("메모")}
+                <button class="btn-deleteList">X</button>
+            </li>
+            <li>
+                <input type="checkbox" name="" id="">
+                ${localStorage.getItem("메모")}
+                <button class="btn-deleteList">X</button>
+            </li>
+        `;
+
+        //리스트 삭제
+        const li = document.querySelectorAll("li");
+        const btns = document.querySelectorAll(".btn-deleteList");
+        
+        for (const item of btns) {
+            item.addEventListener('click', (event) => {
+                let result = confirm('삭제하시겠습니까?');
+                event.stopPropagation();
+                if (result) {
+                    item.parentElement.remove();
+                }
+            })
+        }
+
     </script>
 </body>
 </html>
