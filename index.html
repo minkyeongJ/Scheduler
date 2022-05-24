@@ -24,44 +24,69 @@
 
         localStorage.setItem("메모", memo);
 
+        memoList = [];
+
         //메모장 추가
         const createMemo = document.querySelector(".btn-createMemo");
         const memosArea = document.querySelector(".area-memos");
         createMemo.addEventListener('click', (event)=>{
             const memoBox = 
-            `
-            <li class="box-dailyMemo">
+            `<li class="box-dailyMemo">
                 <h1>${Date()}</h1>
                 <input type="text">
-                <button type="submit">추가</button>
-                <ul>
-                </ul>
-                <button type="submit">메모 삭제</button>
-            </li>
-            `
-            memosArea.innerHTML = memoBox+memosArea.innerHTML;
+                <button type="submit" class="btn-addToDo">추가</button>
+                <ul class="txt-todoList"></ul>
+                <button type="submit" class="btn-deleteMemo">메모 삭제</button>
+            </li>`;
+            memoList.push(memosArea.innerHTML = memoBox+memosArea.innerHTML);
+            
+            localStorage.setItem("메모장", memoList);
             
             console.log("create memo");
         });
+        memosArea.innerHTML = `${localStorage.getItem("메모장")}`;
 
         //메모장 삭제
-
-        const ul = document.querySelector("ul");
+        const dailyMemo = document.querySelectorAll(".box-dailyMemo");
+        const deleteMemoBtns = document.querySelectorAll(".btn-deleteMemo");
+        
+        for (const item of deleteMemoBtns) {
+            item.addEventListener('click', (event) => {
+                let result = confirm('삭제하시겠습니까?');
+                event.stopPropagation();
+                if (result) {
+                    item.parentElement.remove();
+                }
+            })
+            console.log('delete Memo');
+        }
         
         // 리스트 추가
-        // ul.innerHTML=
-        // `
-        //     <li>
-        //         <input type="checkbox" name="" id="">
-        //         ${localStorage.getItem("메모")}
-        //         <button class="btn-deleteList">X</button>
-        //     </li>
-        //     <li>
-        //         <input type="checkbox" name="" id="">
-        //         ${localStorage.getItem("메모")}
-        //         <button class="btn-deleteList">X</button>
-        //     </li>
-        // `;
+        const addToDo = document.querySelector(".btn-addToDo");
+        const todoList = document.querySelectorAll(".txt-todoList");
+        addToDo.addEventListener('click', (event)=>{
+            const toDo = 
+            `<li>
+                <input type="checkbox" name="" id="">
+                ${localStorage.getItem("메모")}
+                <button class="btn-deleteList">X</button>
+            </li>`;
+
+            todoList.innerHTML = todoList.innerHTML+toDo;
+            
+            console.log("create memo");
+        });
+        todoList.innerHTML=
+        `<li>
+                <input type="checkbox" name="" id="">
+                ${localStorage.getItem("메모")}
+                <button class="btn-deleteList">X</button>
+            </li>
+            <li>
+                <input type="checkbox" name="" id="">
+                ${localStorage.getItem("메모")}
+                <button class="btn-deleteList">X</button>
+            </li>`;
 
         //리스트 삭제
         const li = document.querySelectorAll("li");
