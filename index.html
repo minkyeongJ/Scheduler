@@ -18,35 +18,32 @@
         </section>
     </main>
     <script>
-        memo = []; //memo 배열을 만들고
-        memo.push("test1");
-        memo.push("test2");
-
-        localStorage.setItem("메모", memo);
-
+        
         memoList = [];
 
         //메모장 추가
         const createMemo = document.querySelector(".btn-createMemo");
         const memosArea = document.querySelector(".area-memos");
+        let bno = 0;
         createMemo.addEventListener('click', (event)=>{
             const memoBox = 
             `<li class="box-dailyMemo">
-                <h1>${Date()}</h1>
-                <input type="text">
+                <h1>${Date().slice(0, -26)}</h1>
+                <p>${bno}</p>
+                <input type="text" value="" class = "txt-input">
                 <button type="submit" class="btn-addToDo">추가</button>
                 <ul class="txt-todoList"></ul>
                 <button type="submit" class="btn-deleteMemo">메모 삭제</button>
             </li>`;
-            memoList.push(memosArea.innerHTML = memoBox+memosArea.innerHTML);
-            
+            memoList = (memosArea.innerHTML = memoBox+memosArea.innerHTML);
             localStorage.setItem("메모장", memoList);
-            
             console.log("create memo");
+            bno++;
         });
         memosArea.innerHTML = `${localStorage.getItem("메모장")}`;
+        
 
-        //메모장 삭제
+        //메모장 삭제 - 생성후 바로 삭제안됨
         const dailyMemo = document.querySelectorAll(".box-dailyMemo");
         const deleteMemoBtns = document.querySelectorAll(".btn-deleteMemo");
         
@@ -55,39 +52,37 @@
                 let result = confirm('삭제하시겠습니까?');
                 event.stopPropagation();
                 if (result) {
+                    localStorage.removeItem('메모장');
                     item.parentElement.remove();
                 }
             })
             console.log('delete Memo');
         }
         
+
         // 리스트 추가
-        const addToDo = document.querySelector(".btn-addToDo");
+        memo = []; //memo 배열을 만듦
+        const addToDo = document.querySelectorAll(".btn-addToDo");
         const todoList = document.querySelectorAll(".txt-todoList");
-        addToDo.addEventListener('click', (event)=>{
-            const toDo = 
-            `<li>
-                <input type="checkbox" name="" id="">
-                ${localStorage.getItem("메모")}
-                <button class="btn-deleteList">X</button>
-            </li>`;
-
-            todoList.innerHTML = todoList.innerHTML+toDo;
-            
-            console.log("create memo");
-        });
-        todoList.innerHTML=
-        `<li>
-                <input type="checkbox" name="" id="">
-                ${localStorage.getItem("메모")}
-                <button class="btn-deleteList">X</button>
-            </li>
-            <li>
-                <input type="checkbox" name="" id="">
-                ${localStorage.getItem("메모")}
-                <button class="btn-deleteList">X</button>
-            </li>`;
-
+        const txtInput = document.querySelectorAll(".txt-input")
+        for(const item of addToDo){
+            addToDo.addEventListener('click', (event)=>{
+                const toDo = 
+                `<li>
+                    <input type="checkbox" name="" id="">
+                    ${txtInput.innerHTML}
+                    <button class="btn-deleteList">X</button>
+                </li>`;
+                memo = (todoList.innerHTML = todoList.innerHTML+toDo);
+                localStorage.setItem("메모", memo);
+                
+                todoList.innerHTML = todoList.innerHTML+toDo;
+                
+                console.log("create memo");
+            });
+        }
+        todoList.innerHTML = `${localStorage.getItem("메모")}`;
+                
         //리스트 삭제
         const li = document.querySelectorAll("li");
         const btns = document.querySelectorAll(".btn-deleteList");
@@ -97,6 +92,7 @@
                 let result = confirm('삭제하시겠습니까?');
                 event.stopPropagation();
                 if (result) {
+                    localStorage.removeItem('메모');
                     item.parentElement.remove();
                 }
             })

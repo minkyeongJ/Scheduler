@@ -1,4 +1,8 @@
-.box-daily{
+li{
+    display: inline-block;
+    margin: 15px;
+}
+.box-dailyMemo{
     padding: 10px;
     max-width: 250px;
     min-height: 200px;
